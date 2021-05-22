@@ -1,9 +1,43 @@
 from api.cricpunch import Series, Match
+import re
 
 
 def all_series():
+    data = list()
     series = Series()
-    return series.all_series
+    pattern1 = '^/series/_/id/+'
+    pattern2 = '^/series/.+/.+'
+    pattern3 = '^/series/.+'
+    pattern4 = '.*/series/.*'
+
+    for i in series.all_series:
+        if re.match(pattern1, i):
+            series_name = re.split('/id/', i)[1].split('/')[-1]
+            series_id = re.split('/id/', i)[1].split('/')[0]
+            dct = {'ref': i, 'name': series_name, 'id': series_id}
+            data.append(dct)
+
+        elif re.match(pattern2, i):
+            series_name = i.split('/')[2]
+            series_id = i.split('/')[2].split('-')[-1]
+            dct = {'ref': i, 'name': series_name, 'id': series_id}
+            data.append(dct)
+
+        elif re.match(pattern3, i):
+            series_name = i.split('/')[2]
+            series_id = i.split('/')[2].split('-')[-1]
+            dct = {'ref': i, 'name': series_name, 'id': series_id}
+            data.append(dct)
+
+        elif re.match(pattern4, i):
+            series_name = i.split('/')[-1]
+            series_id = i.split('/')[3]
+            dct = {'ref': i, 'name': series_name, 'id': series_id}
+            data.append(dct)
+        else:
+            dct = {'ref': i, 'name': None, 'id': None}
+            data.append(dct)
+    return data
 
 
 def get_series(sid):

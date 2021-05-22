@@ -398,10 +398,6 @@ class Match:
             exec(debug)
         return bat_dict, bowl_dict
 
-    def __repr__(self):
-
-        return json.dumps(dct)
-
 
 def main():
 
