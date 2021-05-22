@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-i&pwb@*z!n+7u^mq*6i!0_(g%gwov=2dty#!)6aw&$n_k6up1)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'cricpunch.herokuapp.com']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'api',
+
 ]
 
 MIDDLEWARE = [
