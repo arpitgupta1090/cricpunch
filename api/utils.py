@@ -25,3 +25,18 @@ def get_match(mid):
         'score': match.score
     }
     return data
+
+
+def get_players(sid):
+    series = Series(sid)
+    data = list()
+
+    for team in series.players:
+        for player in team:
+            team = player.get("player_team")
+            player_id = player.get("player_id")
+            player_name = player.get("player_name")
+            dct = {'team': team, 'player_id': player_id, 'player_name': player_name}
+            data.append(dct)
+
+    return data
