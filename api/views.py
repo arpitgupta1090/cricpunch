@@ -25,3 +25,10 @@ class GetPlayers(APIView):
     def get(self, request, pk):
         data = utils.get_players(pk)
         return Response(data)
+
+
+class AllUrls(APIView):
+    def get(self, request):
+        data = utils.get_urls()
+        return Response(data)
+
