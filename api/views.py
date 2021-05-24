@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 import api.utils as utils
 from api.models import User
@@ -8,24 +9,32 @@ from api.serializers import UserSerializer
 
 
 class ListSeries(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         data = utils.all_series()
         return Response(data)
 
 
 class GetSeries(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, pk):
         data = utils.get_series(pk)
         return Response(data)
 
 
 class GetMatch(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, pk):
         data = utils.get_match(pk)
         return Response(data)
 
 
 class GetPlayers(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request, pk):
         data = utils.get_players(pk)
         return Response(data)
