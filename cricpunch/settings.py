@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,23 +83,32 @@ WSGI_APPLICATION = 'cricpunch.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+in_heroku = False
+if 'DATABASE_URL' in os.environ:
+    in_heroku = True
 
-    'default': {
 
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+if in_heroku:
+    DATABASES = {'default': dj_database_url.config()}
+else:
 
-        'NAME': 'cricpunch',
+    DATABASES = {
 
-        'USER': 'postgres',
+        'default': {
 
-        'PASSWORD': 'admin',
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'HOST': 'localhost',
+            'NAME': 'cricpunch',
 
-        'PORT': '5432',
+            'USER': 'postgres',
 
-    }
+            'PASSWORD': 'admin',
+
+            'HOST': 'localhost',
+
+            'PORT': '5432',
+
+        }
 
 }
 
