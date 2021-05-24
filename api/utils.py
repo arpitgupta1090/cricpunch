@@ -78,7 +78,7 @@ def get_players(sid):
 
 def get_urls():
     data = {
-        'api/': 'List of all urls',
+
         'api/series/': 'List of all series',
         'api/series/<series_id>': 'Describe particular series with list of all matches',
         'api/match/<match_id>': 'Describe particular Match with scorecard and other details',

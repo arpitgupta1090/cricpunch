@@ -46,6 +46,16 @@ class AllUrls(APIView):
         return Response(data)
 
 
+class Home(APIView):
+    def get(self, request):
+        data = {
+            'signup/': 'sign-up for registering to get auth Token using valid email, name and password',
+            'login/': 'login to obtain auth token',
+            'api/': 'List of all urls. Please use token auth to use the this service',
+        }
+        return Response(data)
+
+
 class CreateUser(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
