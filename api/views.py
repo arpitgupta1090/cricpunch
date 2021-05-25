@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 import api.utils as utils
 from api.models import User
@@ -12,32 +13,44 @@ class ListSeries(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request):
-        data = utils.all_series()
-        return Response(data)
+        result = utils.update_transaction(request.user)
+        if result[0]:
+            data = utils.all_series()
+            return Response(data)
+        return Response({"msg": result[1]}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
 
 class GetSeries(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
-        data = utils.get_series(pk)
-        return Response(data)
+        result = utils.update_transaction(request.user)
+        if result[0]:
+            data = utils.get_series(pk)
+            return Response(data)
+        return Response({"msg": result[1]}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
 
 class GetMatch(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
-        data = utils.get_match(pk)
-        return Response(data)
+        result = utils.update_transaction(request.user)
+        if result[0]:
+            data = utils.get_match(pk)
+            return Response(data)
+        return Response({"msg": result[1]}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
 
 class GetPlayers(APIView):
     permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
-        data = utils.get_players(pk)
-        return Response(data)
+        result = utils.update_transaction(request.user)
+        if result[0]:
+            data = utils.get_players(pk)
+            return Response(data)
+        return Response({"msg": result[1]}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
 
 class AllUrls(APIView):

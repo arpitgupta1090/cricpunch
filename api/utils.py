@@ -1,5 +1,7 @@
 from api.cricpunch import Series, Match
+from api.models import TransactionCount
 import re
+import datetime
 
 
 def all_series():
@@ -85,3 +87,63 @@ def get_urls():
         'api/players/<series_id>': 'List of all players in a particular series',
     }
     return data
+
+
+def update_transaction(username):
+
+    try:
+        queryset = TransactionCount.objects.get(user=username)
+        result = limit_check(queryset)
+        if result[0] and result[1]:
+            queryset.dailyCount += 1
+            queryset.monthlyCount += 1
+            queryset.yearlyCount += 1
+            queryset.save()
+            return True,
+        elif result[0]:
+            queryset.dailyCount = 1
+            queryset.monthlyCount = 1
+            queryset.yearlyCount = 1
+            queryset.save()
+            return True,
+        else:
+            return False, result[1]
+    except TransactionCount.DoesNotExist as e:
+        queryset = TransactionCount(user=username)
+        queryset.save()
+        return True,
+    except Exception as e:
+        return False, str(e)
+
+
+def limit_check(queryset):
+
+    daily_limit = 100
+    monthly_limit = 2500
+    yearly_limit = 25000
+    today = datetime.date.today()
+    today_day = today.strftime("%d")
+    today_month = today.strftime("%m")
+    today_year = today.strftime("%Y")
+    user_day = queryset.modifiedDate.strftime("%d")
+    user_month = queryset.modifiedDate.strftime("%m")
+    user_year = queryset.modifiedDate.strftime("%Y")
+    result = True, True
+
+    if today_year == user_year:
+        if queryset.yearlyCount >= yearly_limit:
+            result = False, "Yearly limit exceeded"
+        if today_month == user_month:
+            if queryset.monthlyCount >= monthly_limit:
+                result = False, "Monthly limit exceeded"
+            if today_day == user_day:
+                if queryset.dailyCount >= daily_limit:
+                    result = False, "Daily limit exceeded"
+            else:
+                result = True, False
+        else:
+            result = True, False
+    else:
+        result = True, False
+
+    return result

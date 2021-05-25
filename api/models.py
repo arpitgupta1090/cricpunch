@@ -35,3 +35,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+
+class TransactionCount(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    dailyCount = models.IntegerField(default=1)
+    monthlyCount = models.IntegerField(default=1)
+    yearlyCount = models.IntegerField(default=1)
+    modifiedDate = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return str(self.user)
