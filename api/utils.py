@@ -94,9 +94,21 @@ def update_transaction(username):
     try:
         queryset = TransactionCount.objects.get(user=username)
         result = limit_check(queryset)
-        if result[0] and result[1]:
+        if result[0] and result[1] == "day":
             queryset.dailyCount += 1
             queryset.monthlyCount += 1
+            queryset.yearlyCount += 1
+            queryset.save()
+            return True,
+        elif result[0] and result[1] == "month":
+            queryset.dailyCount = 1
+            queryset.monthlyCount += 1
+            queryset.yearlyCount += 1
+            queryset.save()
+            return True,
+        elif result[0] and result[1] == "year":
+            queryset.dailyCount = 1
+            queryset.monthlyCount = 1
             queryset.yearlyCount += 1
             queryset.save()
             return True,
@@ -128,7 +140,7 @@ def limit_check(queryset):
     user_day = queryset.modifiedDate.strftime("%d")
     user_month = queryset.modifiedDate.strftime("%m")
     user_year = queryset.modifiedDate.strftime("%Y")
-    result = True, True
+    result = True, "day"
 
     if today_year == user_year:
         if queryset.yearlyCount >= yearly_limit:
@@ -140,9 +152,9 @@ def limit_check(queryset):
                 if queryset.dailyCount >= daily_limit:
                     result = False, "Daily limit exceeded"
             else:
-                result = True, False
+                result = True, "month"
         else:
-            result = True, False
+            result = True, "year"
     else:
         result = True, False
 
