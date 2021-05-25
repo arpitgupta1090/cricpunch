@@ -72,5 +72,3 @@ class Home(APIView):
 class CreateUser(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
-

@@ -120,7 +120,7 @@ def update_transaction(username):
             return True,
         else:
             return False, result[1]
-    except TransactionCount.DoesNotExist as e:
+    except TransactionCount.DoesNotExist:
         queryset = TransactionCount(user=username)
         queryset.save()
         return True,
